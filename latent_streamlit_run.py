@@ -42,7 +42,7 @@ def run_model(args, status, stoutput, DefaultPaths):
     except:
         last_model = ''
 
-    print(args)
+    #print(args)
     def fetch(url_or_path):
         if str(url_or_path).startswith('http://') or str(url_or_path).startswith('https://'):
             r = requests.get(url_or_path)
@@ -88,7 +88,7 @@ def run_model(args, status, stoutput, DefaultPaths):
 
     device = torch.device('cuda:0' if (torch.cuda.is_available() and not args.cpu) else 'cpu')
     print('Using device:', device)
-    print(args.model_path)
+    #print(args.model_path)
     model_state_dict = torch.load(args.model_path, map_location='cpu')
 
     model_params = {
@@ -378,7 +378,7 @@ def run_model(args, status, stoutput, DefaultPaths):
             init = torch.cat(args.batch_size*2*[h], dim=0)
         else:
             init = None
-        print(init)
+        #print(init)
         #image_display = Output()
         for i in range(args.num_batches):
             cur_t = diffusion.num_timesteps - 1
@@ -429,7 +429,7 @@ def run_model(args, status, stoutput, DefaultPaths):
             #save_sample(i, sample, args.clip_score)
             if not path_exists(DefaultPaths.output_path):
                 os.makedirs(DefaultPaths.output_path)
-            save_filename = f"{DefaultPaths.output_path}/{sanitize_filename(args.text)} [GLID-3 XL] {args.seed}.png"
+            save_filename = f"{DefaultPaths.output_path}/{(abs(hash(sanitize_filename(args.text))) % (10 ** 8))} [GLID-3 XL] {args.seed}.png"
             
             for k in range(args.batch_size):
                 shutil.copyfile(
