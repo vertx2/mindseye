@@ -860,7 +860,7 @@ def run_model(args2, status, stoutput, DefaultPaths):
             else:
                 frame_prompt = []
 
-            print(args.image_prompts_series)
+            #print(args.image_prompts_series)
             if args.image_prompts_series is not None and frame_num >= len(
                 args.image_prompts_series
             ):
@@ -870,7 +870,7 @@ def run_model(args2, status, stoutput, DefaultPaths):
             else:
                 image_prompt = []
 
-            print(f"Frame Prompt: {frame_prompt}")
+            #print(f"Frame Prompt: {frame_prompt}")
 
             model_stats = []
             for clip_model in clip_models:
@@ -1347,25 +1347,25 @@ def run_model(args2, status, stoutput, DefaultPaths):
 
                 if not path_exists(DefaultPaths.output_path):
                     os.makedirs(DefaultPaths.output_path)
-                save_filename = f"{DefaultPaths.output_path}/{sanitize_filename(args2.prompt)} [Disco Diffusion v5] {args2.seed}.png"
-                print(save_filename)
+                save_filename = f"{DefaultPaths.output_path}/{(abs(hash(sanitize_filename(args2.prompt))) % (10 ** 8))} [Disco Diffusion v5] {args2.seed}.png"
+                #print(save_filename)
                 file_list = []
                 if path_exists(save_filename):
                     for file in sorted(os.listdir(f"{DefaultPaths.output_path}/")):
                         if file.startswith(
                             f"{sanitize_filename(args2.prompt)} [Disco Diffusion v5] {args2.seed}"
                         ):
-                            print(file)
+                            #print(file)
                             file_list.append(file)
-                    print(file_list)
+                    #print(file_list)
                     last_name = file_list[-1]
-                    print(last_name)
+                    #print(last_name)
                     if last_name[-15:-10] == "batch":
                         count_value = int(last_name[-10:-4]) + 1
                         count_string = f"{count_value:05d}"
-                        save_filename = f"{DefaultPaths.output_path}/{sanitize_filename(args2.prompt)} [Disco Diffusion v5] {args2.seed}_batch {count_string}.png"
+                        save_filename = f"{DefaultPaths.output_path}/{(abs(hash(sanitize_filename(args2.prompt))) % (10 ** 8))} [Disco Diffusion v5] {args2.seed}_batch {count_string}.png"
                     else:
-                        save_filename = f"{DefaultPaths.output_path}/{sanitize_filename(args2.prompt)} [Disco Diffusion v5] {args2.seed}_batch 00001.png"
+                        save_filename = f"{DefaultPaths.output_path}/{(abs(hash(sanitize_filename(args2.prompt))) % (10 ** 8))} [Disco Diffusion v5] {args2.seed}_batch 00001.png"
                 shutil.copyfile(
                     args2.image_file,
                     save_filename,
