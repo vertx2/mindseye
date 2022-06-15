@@ -95,15 +95,14 @@ st.set_page_config(layout="wide")
 
 class DefaultPaths:
     root_path = f"."
+    output_path = f"{root_path}/outputs"
     if not (path_exists(f"/content/drive/MyDrive/")):
         is_drive = False
         model_path = root_path
-        output_path = f"{root_path}/outputs"
     else:
         is_drive = True
         drive_path = f"/content/drive/MyDrive/MindsEye"
         model_path = f"{drive_path}/models"
-        output_path = f"{drive_path}/outputs"
 
 
 initial_load = st.empty()
@@ -833,44 +832,21 @@ with col_output2:
 
     gallery_text_area = st.empty()
     gallery_image_area = st.empty()
-    if DefaultPaths.is_drive:
-        output_folder = f"{DefaultPaths.drive_path}/outputs"
-        if not path_exists(output_folder):
-            os.makedirs(output_folder)
-        fid = get_id(output_folder)
-        if os.listdir(output_folder):
-            files_path = os.path.join(output_folder, "*.png")
-            files = sorted(glob.iglob(files_path), key=os.path.getctime, reverse=True)
 
-            if(files[0][-6] == '-'):
-                file_list = []
-                prepend = files[0][:-6]
-                for file in files:
-                    if(prepend in file):
-                        file_list.append(file)
-            else:
-                file_list = files[0]
-            gallery_text_area.write("Welcome back! Your last creation:")
-            gallery_image_area.image(file_list)
-            st.write(
-                f'<div class="bottom-line"><div class="row-widget stButton"><a kind="primary" class="css-1q8dd3e edgvbvh1" href="https://drive.google.com/drive/folders/{fid}" target="_blank">View your gallery on Google Drive</a></div><small>MindsEye is fully open source. We <b>do not collect prompts or results</b>. Your creations don\'t belong to MindsEye. Read our <a href="https://multimodal.art/mindseye#f-a-q" target="_blank">FAQ</a>.<br>Join our <a href="https://discord.gg/FsDBTE5BNx" target="_blank">Discord</a>! And if you enjoy using it, consider supporting us on <a href="https://www.patreon.com/multimodalart" target="_blank">Patreon</a> (I\'ll never lock any feature behind a paywall though)</small></div>',
-                unsafe_allow_html=True,
-            )
-    else:
-        st.write(
-            f'<div class="bottom-line"><div class="row-widget stButton"><button disabled kind="primary" class="css-1q8dd3e edgvbvh1">No gallery found. Rerun Colab and connect to Drive to save pieces in a gallery</button></div><small>We <b>do not collect prompts or results</b>. Your creations don\'t belong to MindsEye. Read our <a href="https://multimodal.art/mindseye#f-a-q" target="_blank">FAQ</a>.<br>Feel free to reference #MindsEye and tag <a href="https://multimodal.art/multimodalart" target="_blank">@multimodalart</a> when sharing your creations if you wish</small></div>',
-            unsafe_allow_html=True,
-        )
-        
-        if os.path.exists(f'{0}-{image_file}'):
-            gallery_text_area.write("Your last creation:")
-            image_gallery = []
-            for k in range(len(glob.glob('*.png'))-1):
-                image_gallery.append(f'{k}-{image_file}')
-            gallery_image_area.image(image_gallery)
-        #if os.path.exists("progress.png"):
-        #    gallery_text_area.write("Your last creation:")
-        #    gallery_image_area.image(Image.open("progress.png"))
+    st.write(
+        f'<div class="bottom-line"><div class="row-widget stButton"><button disabled kind="primary" class="css-1q8dd3e edgvbvh1">No gallery.</button></div><small>We <b>do not collect prompts or results</b>. Your creations don\'t belong to MindsEye. Read our <a href="https://multimodal.art/mindseye#f-a-q" target="_blank">FAQ</a>.<br>Feel free to reference #MindsEye and tag <a href="https://multimodal.art/multimodalart" target="_blank">@multimodalart</a> when sharing your creations if you wish</small></div>',
+        unsafe_allow_html=True,
+    )
+    
+    if os.path.exists(f'{0}-{image_file}'):
+        gallery_text_area.write("Your last creation:")
+        image_gallery = []
+        for k in range(len(glob.glob('*.png'))-1):
+            image_gallery.append(f'{k}-{image_file}')
+        gallery_image_area.image(image_gallery)
+    #if os.path.exists("progress.png"):
+    #    gallery_text_area.write("Your last creation:")
+    #    gallery_image_area.image(Image.open("progress.png"))
     
 footer = """
 <div class="footer">
