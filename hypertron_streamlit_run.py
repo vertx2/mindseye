@@ -1742,21 +1742,21 @@ def run_model(args2, status, stoutput, DefaultPaths):
 
                 if not path_exists(DefaultPaths.output_path):
                     os.makedirs(DefaultPaths.output_path)
-                save_filename = f"{DefaultPaths.output_path}/{sanitize_filename(args2.prompt)} [{args2.sub_model}] {args2.seed}.png"
+                save_filename = f"{DefaultPaths.output_path}/{(abs(hash(sanitize_filename(args2.prompt))) % (10 ** 8))} [{args2.sub_model}] {args2.seed}.png"
                 file_list = []
                 if path_exists(save_filename):
                     for file in sorted(os.listdir(f"{DefaultPaths.output_path}/")):
                         if file.startswith(
-                            f"{sanitize_filename(args2.prompt)} [{args2.sub_model}] {args2.seed}"
+                            f"{(abs(hash(sanitize_filename(args2.prompt))) % (10 ** 8))} [{args2.sub_model}] {args2.seed}"
                         ):
                             file_list.append(file)
                     last_name = file_list[-1]
                     if last_name[-15:-10] == "batch":
                         count_value = int(last_name[-10:-4]) + 1
                         count_string = f"{count_value:05d}"
-                        save_filename = f"{DefaultPaths.output_path}/{sanitize_filename(args2.prompt)} [{args2.sub_model}] {args2.seed}_batch {count_string}.png"
+                        save_filename = f"{DefaultPaths.output_path}/{(abs(hash(sanitize_filename(args2.prompt))) % (10 ** 8))} [{args2.sub_model}] {args2.seed}_batch {count_string}.png"
                     else:
-                        save_filename = f"{DefaultPaths.output_path}/{sanitize_filename(args2.prompt)} [{args2.sub_model}] {args2.seed}_batch 00001.png"
+                        save_filename = f"{DefaultPaths.output_path}/{(abs(hash(sanitize_filename(args2.prompt))) % (10 ** 8))} [{args2.sub_model}] {args2.seed}_batch 00001.png"
                 shutil.copyfile(
                     args2.image_file,
                     save_filename,
